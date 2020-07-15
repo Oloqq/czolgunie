@@ -120,13 +120,14 @@ module.exports = function extend(Game) {
       data.tanks[id] = d;
 		}
 		
-		data.projectiles = {};
+		data.projectiles = [];
 		for (let i in this.projectiles) {
 			let p = this.projectiles[i];
 			if (!p.active) continue;
 			data.projectiles.push({
 				x: p.body.x,
 				y: p.body.y,
+				radius: p.radius,
 				angle: p.body.angle
 			})
 		}

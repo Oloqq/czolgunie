@@ -3,8 +3,16 @@ import {Circle} from 'collisions';
 
 class Entity {
   constructor(x, y, points, angle_rad, type) {
-    this.points = points;
-    this.body = new Polygon(x, y, this.points, angle_rad);
+    if (typeof points == 'number') {
+      this.points = [];
+      this.radius = points;
+      this.body = new Circle(x, y, this.points, angle_rad);
+    }
+    else if (typeof points == 'object') {
+      this.points = points;
+      this.radius = undefined;
+      this.body = new Polygon(x, y, this.points, angle_rad);
+    }  
     this.type = type;
     this.body.entity = this;
   }

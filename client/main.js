@@ -157,6 +157,18 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
 
     for (let i in projectiles) {
         let p = projectiles[i];
+        // ctx.fillStyle = p.color;
+        ctx.fillStyle = '#ececec';
+        ctx.scale(zoom, zoom);
+        ctx.translate(centerx-(camerax-p.x), centery-(cameray-p.y));
+        ctx.rotate(p.angle);
+        
+        ctx.beginPath();
+        ctx.arc(0, 0, p.radius, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.resetTransform();
     }
     
     //walls

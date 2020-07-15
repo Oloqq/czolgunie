@@ -65,7 +65,8 @@ io.on('connection', function(socket) {
   socket.emit('init', id, isGamemaster, game.getInitData());
   
   socket.on('keyboard state', (keys)=>{
-    game.keyboards[id] = keys;
+    game.keyboards[id].previous = game.keyboards[id].now;
+    game.keyboards[id].now = keys;
   });
 
   // gamemaster functions

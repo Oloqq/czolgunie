@@ -42,14 +42,10 @@ class Game {
     for (let id in this.tanks) {
       let t = this.tanks[id];
       let kb = this.keyboards[id];
-
-      if (kb['w']) t.accelerate(1);
-      if (kb['s']) t.accelerate(-1);
-      if (kb['a']) t.turn(-1);
-      if (kb['d']) t.turn(1);
-      if (kb['left']) t.rotateTower(-1);
-      if (kb['right']) t.rotateTower(1);
-      if (kb['up']) { //shoot
+      let rq = t.reactToKeyboard(kb);
+      
+      if (rq.shoot) { //shoot
+        // console.log('pew');
         this.getInactiveProjectile().activate(t);
       }
 

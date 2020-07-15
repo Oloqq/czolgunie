@@ -32,6 +32,23 @@ class Tank extends Entity {
     this.gun = JSON.parse(JSON.stringify(t.gun));
   }
 
+  reactToKeyboard(keyboard) {
+    let kb = keyboard.now;
+    let was = keyboard.previous;
+    let ret = {shoot: false}
+    if (kb == undefined) return ret;
+    if (was == undefined) was = kb;
+    if (kb['w']) this.accelerate(1);
+    if (kb['s']) this.accelerate(-1);
+    if (kb['a']) this.turn(-1);
+    if (kb['d']) this.turn(1);
+    if (kb['left']) this.rotateTower(-1);
+    if (kb['right']) this.rotateTower(1);
+    if (kb['up'] && !was['up']) ret.shoot = true;
+
+    return ret;
+  }
+
   update() {
     if (!this.accelerated) {
       if (this.speed > 0) {

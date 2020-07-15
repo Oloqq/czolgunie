@@ -12,7 +12,10 @@ class Projectile extends Entity {
   }
 
   activate(tank) {
-
+    this.active = true;
+    this.master = tank;
+    this.body.x = tank.body.x;
+    this.body.y = tank.body.y
   }
 
   deactivate() {
