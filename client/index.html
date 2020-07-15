@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Czołgunie</title>
+    <link rel="shortcut icon" type="image/ico" href="/client/favicon.ico"/>
+    <link rel="stylesheet" href="/client/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <canvas id="gameCanvas" width=600 height=600 style="border: 1px solid black;"></canvas>
+    <div id="gamemaster">
+        map: <input id="mapName" type="text">
+        <input id="sendButton" type="button" value="submit">
+    </div>
+
+    <script src="/client/main.js"></script>
+    <script src="/client/gamemaster.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "length": 50,
+  "width": 40,
+  "color": "#0f4f04",
+  "tower": {
+    "x": 0,
+    "length": 30,
+    "width": 25,
+    "rotationSpeed": 3,
+    "color": "#358725"
+  },
+
+  "maxSpeed": 400,
+  "accelerationBoost": 1,
+  "rotationBoost": 1,
+  "engineBraking": 3,
+  "brakeForce": 300,
+
+  "gun": "this string will be replaced by gun object (should be)"
+}

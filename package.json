@@ -1,0 +1,19 @@
+{
+  "name": "czolgunie",
+  "version": "1.0.0",
+  "description": "czolgunie hehe",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "olo",
+  "license": "ISC",
+  "dependencies": {
+    "collisions": "^2.0.13",
+    "eslint": "^5.16.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}

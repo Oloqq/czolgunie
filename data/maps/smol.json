@@ -1,0 +1,18 @@
+{
+  "width": 800,
+  "height": 600,
+  "edgeColor" : "#f2a365",
+  "rectangles": [
+    [100, 150, "#f2a365", [[100, 100], [100, 350], [600, 100], [600, 350]]]
+  ],
+  "walls": [
+    [[[-100, 0], [-50, -75], [50, -75], [100, 0], [50, 75], [-50, 75]], [[400, 300]], 0, "#f2a365"]
+  ],
+
+  "commentwalls": [
+    [[["shape pointx", "shape pointy"], ["pointx", "pointy"]], [["coordx", "coordy"], ["coordx", "coordy"]], "rotation", "color"]
+  ],
+  "commentrectangles": [
+    ["width", "height", "color", [["coordx", "coordy"], ["coordx", "coordy"]]]
+  ]
+}
