@@ -3,9 +3,10 @@ var Entity = require('./entity').Entity;
 // import {Circle} from "collisions";
 
 class Projectile extends Entity {
-  constructor() {
+  constructor(system) {
     super(0, 0, 20, 0, 'projectile');
-    this.active = false;    
+    this.insertInto(system);
+    this.active = false;
   }
 
   activate(tank) {
@@ -17,8 +18,8 @@ class Projectile extends Entity {
     this.color = tank.gun.shell.color;
 
     this.speed = tank.gun.shell.speed;
-    this.dx = Math.cos(tank.body.angle);
-    this.dy = Math.sin(tank.body.angle);
+    this.dx = Math.cos(tank.body.angle + tank.tower.rotation);
+    this.dy = Math.sin(tank.body.angle + tank.tower.rotation);
   }
 
   deactivate() {

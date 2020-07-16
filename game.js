@@ -14,7 +14,7 @@ class Game {
     this.walls = [];
     this.projectiles = [];
     for (let i = 0; i < 500; i++) {
-      this.projectiles.push(new Projectile());
+      this.projectiles.push(new Projectile(this.system));
     }
     this.projectileSearchIterator = 0;
     this.wallsChanged = false;
@@ -76,6 +76,21 @@ class Game {
           p.x += result.overlap * result.overlap_x / 2;
           p.y += result.overlap * result.overlap_y / 2;
           //TODO apply some charge damage, condition above translations on masses
+        }
+      }
+    }
+    for (let i in this.projectiles) {
+      let p = this.projectiles[i];
+      if (!p.active) continue;
+      const potentials = p.body.potentials();
+      for (const po of potentials) {
+        if (po.entity.type == 'wall' && p.body.collides(po, result)) {
+          p.deactivate();
+        }
+        if (po.entity.type == 'tank' && p.body.collides(po, result)) {
+          if (po.entity != p.master) {
+            p.deactivate();
+          }
         }
       }
     }
