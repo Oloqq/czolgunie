@@ -38,25 +38,25 @@ class Game {
     delete this.keyboards[id];
   }
 
-  update() {
+  update(dt) {
     for (let id in this.tanks) {
       let t = this.tanks[id];
       let kb = this.keyboards[id];
-      let rq = t.reactToKeyboard(kb);
+      let rq = t.reactToKeyboard(kb, dt);
       
       if (rq.shoot) { //shoot
         // console.log('pew');
         this.getInactiveProjectile().activate(t);
       }
 
-      t.update();
+      t.update(dt);
     }
 
     for (let i = 0; i < this.projectiles.length; i++) {
       let p = this.projectiles[i];
       if (!p.active) continue;
 
-      p.update();
+      p.update(dt);
     }
 
     this.system.update();

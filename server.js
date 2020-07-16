@@ -103,12 +103,12 @@ io.on('connection', function(socket) {
 });
 
 setInterval(()=>{
-  game.update();
+  game.update(1/60);
   let gameData = game.getUpdateData();
   for (let id in sockets) {
       sockets[id].emit('update', gameData);
   }
-}, 20);
+}, 16);
 
 
 function randomText(length) {

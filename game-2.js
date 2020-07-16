@@ -128,6 +128,7 @@ module.exports = function extend(Game) {
 				x: p.body.x,
 				y: p.body.y,
 				radius: p.radius,
+				color: p.color,
 				angle: p.body.angle
 			})
 		}

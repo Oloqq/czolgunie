@@ -1,7 +1,5 @@
 var Entity = require('./entity').Entity;
 
-const dt = 0.02; //projectile class also has this, dont change just one
-
 class Tank extends Entity {
   constructor(x, y, angle_deg, template) {
     var t = template;
@@ -32,24 +30,24 @@ class Tank extends Entity {
     this.gun = JSON.parse(JSON.stringify(t.gun));
   }
 
-  reactToKeyboard(keyboard) {
+  reactToKeyboard(keyboard, dt) {
     let kb = keyboard.now;
     let was = keyboard.previous;
     let ret = {shoot: false}
     if (kb == undefined) return ret;
     if (was == undefined) was = kb;
-    if (kb['w']) this.accelerate(1);
-    if (kb['s']) this.accelerate(-1);
-    if (kb['a']) this.turn(-1);
-    if (kb['d']) this.turn(1);
-    if (kb['left']) this.rotateTower(-1);
-    if (kb['right']) this.rotateTower(1);
+    if (kb['w']) this.accelerate(1 * dt);
+    if (kb['s']) this.accelerate(-1 * dt);
+    if (kb['a']) this.turn(-1 * dt);
+    if (kb['d']) this.turn(1 * dt);
+    if (kb['left']) this.rotateTower(-1 * dt);
+    if (kb['right']) this.rotateTower(1 * dt);
     if (kb['up'] && !was['up']) ret.shoot = true;
 
     return ret;
   }
 
-  update() {
+  update(dt) {
     if (!this.accelerated) {
       if (this.speed > 0) {
         this.speed -= this.engineBraking;
@@ -64,17 +62,17 @@ class Tank extends Entity {
     
     let dx = Math.cos(this.body.angle);
     let dy = Math.sin(this.body.angle);
-    let vx = dx * this.speed
-    let vy = dy * this.speed
+    let vx = dx * this.speed;
+    let vy = dy * this.speed;
     this.move(vx * dt, vy * dt);
   }
 
   accelerate(dir) {
     if (dir * this.speed < 0) {
-      this.speed += this.brakeForce * dir * dt;  
+      this.speed += this.brakeForce * dir;  
       if (dir * this.speed > 0) this.speed = 0;
     } else {
-      this.speed += this.acceleration * dir * dt;
+      this.speed += this.acceleration * dir;
       if (dir > 0) this.speed = Math.min(this.speed, this.maxSpeed);
       else if (dir < 0) this.speed = Math.max(this.speed, -this.maxSpeed);
     }
@@ -89,11 +87,11 @@ class Tank extends Entity {
   }
 
   turn(dir) {
-    this.rotate(this.rotationSpeed * dir * dt);
+    this.rotate(this.rotationSpeed * dir);
   }
 
   rotateTower(dir) {
-    this.tower.rotation += this.tower.rotationSpeed * dir * dt;
+    this.tower.rotation += this.tower.rotationSpeed * dir;
   }
 }
 

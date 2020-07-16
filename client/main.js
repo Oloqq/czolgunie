@@ -157,8 +157,7 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
 
     for (let i in projectiles) {
         let p = projectiles[i];
-        // ctx.fillStyle = p.color;
-        ctx.fillStyle = '#ececec';
+        ctx.fillStyle = p.color;
         ctx.scale(zoom, zoom);
         ctx.translate(centerx-(camerax-p.x), centery-(cameray-p.y));
         ctx.rotate(p.angle);

@@ -1,9 +1,6 @@
 var Entity = require('./entity').Entity;
 
-import {Circle} from "collisions";
-
-const dt = 0.02; //projectile class also has this, dont change just one
-                 //i was too lazy to do something properly with it
+// import {Circle} from "collisions";
 
 class Projectile extends Entity {
   constructor() {
@@ -14,16 +11,24 @@ class Projectile extends Entity {
   activate(tank) {
     this.active = true;
     this.master = tank;
-    this.body.x = tank.body.x;
-    this.body.y = tank.body.y
+    this.body.x = tank.body.x; //TODO spawn at the edge of the barrel
+    this.body.y = tank.body.y;
+    this.radius = tank.gun.caliber; //will this properly update object in the system?
+    this.color = tank.gun.shell.color;
+
+    this.speed = tank.gun.shell.speed;
+    this.dx = Math.cos(tank.body.angle);
+    this.dy = Math.sin(tank.body.angle);
   }
 
   deactivate() {
-
+    this.active = false;
   }
 
-  update() {
-
+  update(dt) {
+    let vx = this.dx * this.speed;
+    let vy = this.dy * this.speed;
+    this.move(vx * dt, vy * dt);
   }
 }
 
