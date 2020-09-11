@@ -119,6 +119,8 @@ socket.on('update', (gameData) => {
     keysToSend['left'] = keys['arrowleft'];
     keysToSend['right'] = keys['arrowright'];
     socket.emit('keyboard state', keysToSend);
+
+    document.getElementById("hp").innerText = "hp%: " + (tanks[id].hpFraction * 100)
 });
 
 function render(camerax, cameray, zoom, tanks, walls, projectiles) {

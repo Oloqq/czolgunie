@@ -22,6 +22,15 @@ class Tank extends Entity {
     this.acceleration;
     this.rotationSpeed;
     this.adjustAcceleration();
+
+    this.hp = this.maxHp;
+  }
+
+  hurt(damage) {
+    this.hp -= damage;
+    if (this.hp <= 0) {
+      this.hp = 0;
+    }
   }
 
   applyTemplate(tank, gun) {
@@ -49,6 +58,8 @@ class Tank extends Entity {
     this.rotationBoost = template.rotationBoost;
     this.brakeForce = template.brakeForce;
 
+    this.maxHp = template.hp;
+
     this.gun = JSON.parse(JSON.stringify(template.gun));
   }
 
@@ -56,6 +67,8 @@ class Tank extends Entity {
     let kb = keyboard.now;
     let was = keyboard.previous;
     let ret = {shoot: false}
+    if (this.hp <= 0) return ret;
+
     if (kb == undefined) return ret;
     if (was == undefined) was = kb;
     if (kb['w']) this.accelerate(1 * dt);

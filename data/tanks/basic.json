@@ -2,6 +2,7 @@
   "length": 50,
   "width": 40,
   "color": "#0f4f04",
+
   "tower": {
     "x": 0,
     "length": 30,
@@ -15,6 +16,8 @@
   "rotationBoost": 1,
   "engineBraking": 3,
   "brakeForce": 300,
+
+  "hp": 100,
 
   "gun": "this string will be replaced by gun object (should be)"
 }

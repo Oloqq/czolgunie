@@ -2,7 +2,7 @@ import {Polygon} from 'collisions';
 import {Circle} from 'collisions';
 
 class Entity {
-  constructor(x, y, points, angle_rad, type) {
+  constructor(x, y, points, angle_rad, type, hp) {
     if (typeof points == 'number') {
       this.points = [];
       this.radius = points;
@@ -15,6 +15,10 @@ class Entity {
     }  
     this.type = type;
     this.body.entity = this;
+  }
+
+  getHpFraction() {
+    return this.hp / this.maxHp;
   }
 
   insertInto(system) {

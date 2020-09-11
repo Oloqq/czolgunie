@@ -51,7 +51,6 @@ class Game {
       let rq = t.reactToKeyboard(kb, dt);
       
       if (rq.shoot) { //shoot
-        // console.log('pew');
         this.getInactiveProjectile().activate(t);
       }
 
@@ -86,16 +85,17 @@ class Game {
       }
     }
     for (let i in this.projectiles) {
-      let p = this.projectiles[i];
-      if (!p.active) continue;
-      const potentials = p.body.potentials();
+      let proj = this.projectiles[i];
+      if (!proj.active) continue;
+      const potentials = proj.body.potentials();
       for (const po of potentials) {
-        if (po.entity.type == 'wall' && p.body.collides(po, result)) {
-          p.deactivate();
+        if (po.entity.type == 'wall' && proj.body.collides(po, result)) {
+          proj.deactivate();
         }
-        if (po.entity.type == 'tank' && p.body.collides(po, result)) {
-          if (po.entity != p.master) {
-            p.deactivate();
+        if (po.entity.type == 'tank' && proj.body.collides(po, result)) {
+          if (po.entity != proj.master) {
+            po.entity.hurt(proj.damage);
+            proj.deactivate();
           }
         }
       }

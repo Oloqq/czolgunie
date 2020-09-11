@@ -60,6 +60,7 @@ module.exports = function extend(Game) {
       let d = {
         x: t.body.x,
         y: t.body.y,
+        hpFraction: t.getHpFraction(),
         angle: t.body.angle,
         towerRotation: t.tower.rotation
       };
