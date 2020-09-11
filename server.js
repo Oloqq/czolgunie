@@ -77,6 +77,11 @@ io.on('connection', function(socket) {
     console.log('new gamemaster: ' + id);
   });
 
+  socket.on('reload templates', ()=>{
+    console.log('reloading templates');
+    game.reloadTemplates();
+  });
+
   //TODO map change
 
   // disconnect

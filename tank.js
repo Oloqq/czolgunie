@@ -1,33 +1,55 @@
 var Entity = require('./entity').Entity;
 
 class Tank extends Entity {
-  constructor(x, y, angle_deg, template) {
-    var t = template;
-    var pts = [[-t.length/2, - t.width/2], [t.length/2, - t.width/2],
-               [t.length/2, t.width/2], [-t.length/2, t.width/2]];
+  constructor(x, y, angle_deg, tankTemplate, gunTemplate) {
+    var template = require(tankTemplate);
+    template.gun = require(gunTemplate);
+    
+    var pts = [[-template.length/2, - template.width/2], [template.length/2, - template.width/2],
+               [template.length/2, template.width/2], [-template.length/2, template.width/2]];
     var angle_rad = angle_deg * Math.PI / 180;
 
+    //construct entity
     super(x, y, pts, angle_rad, 'tank');
+    this.applyTemplate(template)
 
-    this.color = t.color;
-
-    this.tower = JSON.parse(JSON.stringify(t.tower));
+    //dimensions
     this.tower.rotation = 0;
 
     //movement
     this.speed = 0;
-    this.maxSpeed = t.maxSpeed;
     this.accelerated = false;
-    this.engineBraking = t.engineBraking;
     this.acceleration;
     this.rotationSpeed;
-    this.accelerationBoost = t.accelerationBoost;
-    this.rotationBoost = t.rotationBoost;
     this.adjustAcceleration();
-    this.brakeForce = t.brakeForce;
+  }
 
-    //gun
-    this.gun = JSON.parse(JSON.stringify(t.gun));
+  applyTemplate(tank, gun) {
+    var template;
+    if (typeof tank == 'string' && typeof gun == 'string') {
+      delete require.cache[require.resolve(tank)];
+      delete require.cache[require.resolve(gun)];
+      template = require(tank);
+      template.gun = require(gun);
+    }
+    else if (typeof tank == 'object') {
+      template = tank;
+    }
+    else {
+      console.log("WARNING: Tank.applyTemplate called with invalid args");
+      return;
+    }
+    let rotation = this.tower ? this.tower.rotation : 0;
+    this.tower = JSON.parse(JSON.stringify(template.tower));
+    this.tower.rotation = rotation;
+    this.color = template.color;
+    this.maxSpeed = template.maxSpeed;
+    this.engineBraking = template.engineBraking;
+    this.accelerationBoost = template.accelerationBoost;
+    this.rotationBoost = template.rotationBoost;
+    this.brakeForce = template.brakeForce;
+
+    this.gun = JSON.parse(JSON.stringify(template.gun));
   }
 
   reactToKeyboard(keyboard, dt) {

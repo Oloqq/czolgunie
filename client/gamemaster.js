@@ -7,6 +7,10 @@ submitButton.addEventListener('click', (ev)=>{
   socket.emit('map change', mapName.value);
 });
 
+reloadTemplatesButton.addEventListener('click', (ev)=>{
+  socket.emit('reload templates');
+});
+
 
 
 

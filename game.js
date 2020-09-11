@@ -24,12 +24,18 @@ class Game {
   newClient(id) {
     var s = this.newSpawnPosition();
     
-    let template = require('./data/tanks/basic.json');
-    template.gun = require('./data/guns/basic.json');
-    var t = new Tank(s.x, s.y, s.r, template);
-    t.insertInto(this.system);
-    this.tanks[id] = t;
+    var tank = new Tank(s.x, s.y, s.r, './data/tanks/basic.json', './data/guns/basic.json');
+    tank.insertInto(this.system);
+    this.tanks[id] = tank;
     this.keyboards[id] = {};
+  }
+
+  reloadTemplates()
+  {
+    for (let id in this.tanks) {
+      var tank = this.tanks[id];
+      tank.applyTemplate('./data/tanks/basic.json', './data/guns/basic.json');
+    }
   }
 
   removeClient(id) {
@@ -122,6 +128,7 @@ class Game {
   }
 }
 
-Game = require('./game-2')(Game);
+Game = require('./game.map')(Game);
+Game = require('./game.connect')(Game);
 
 module.exports.Game = Game;
