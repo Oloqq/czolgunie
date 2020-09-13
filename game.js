@@ -24,7 +24,7 @@ class Game {
   newClient(id) {
     var s = this.newSpawnPosition();
     
-    var tank = new Tank(s.x, s.y, s.r, './data/tanks/basic.json', './data/guns/basic.json');
+    var tank = new Tank(s.x, s.y, s.r, './data/tanks/basic.json', './data/guns/basic.json', 'MASNY CZOU');
     tank.insertInto(this.system);
     this.tanks[id] = tank;
     this.keyboards[id] = {};
@@ -48,10 +48,19 @@ class Game {
     for (let id in this.tanks) {
       let t = this.tanks[id];
       let kb = this.keyboards[id];
-      let rq = t.reactToKeyboard(kb, dt);
       
-      if (rq.shoot) { //shoot
-        this.getInactiveProjectile().activate(t);
+      if (t.hp > 0) {
+        let rq = t.reactToKeyboard(kb, dt);      
+      
+        if (rq.shoot) { //shoot
+          this.getInactiveProjectile().activate(t);
+        }  
+      } 
+      else {
+        if (kb.now[' '] && !kb.previous[' ']) {
+          let s = this.newSpawnPosition();
+          t.respawn(s.x, s.y, s.r * Math.PI / 180)
+        }
       }
 
       t.update(dt);
@@ -67,6 +76,7 @@ class Game {
     this.system.update();
 
     let result = this.system.createResult();
+    //tanks
     for (let id in this.tanks) {
       let t = this.tanks[id];
       const potentials = t.body.potentials();
@@ -84,6 +94,7 @@ class Game {
         }
       }
     }
+    // projectiles 
     for (let i in this.projectiles) {
       let proj = this.projectiles[i];
       if (!proj.active) continue;

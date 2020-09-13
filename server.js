@@ -69,6 +69,11 @@ io.on('connection', function(socket) {
     game.keyboards[id].now = keys;
   });
 
+  //test functions
+  socket.on('kill me', () => {
+    game.tanks[id].hurt(game.tanks[id].maxHp);
+  });
+
   // gamemaster functions
   socket.on('im the gamemaster', ()=>{
     sockets[gamemaster].emit('init', gamemaster, false);

@@ -31,6 +31,7 @@ module.exports = function extend(Game) {
     for (let id in this.tanks) {
       let t = this.tanks[id];
       let d = {
+        name: t.name,
         points: t.points,
         color: t.color,
         tower: {

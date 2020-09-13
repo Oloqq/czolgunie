@@ -1,7 +1,7 @@
 var Entity = require('./entity').Entity;
 
 class Tank extends Entity {
-  constructor(x, y, angle_deg, tankTemplate, gunTemplate) {
+  constructor(x, y, angle_deg, tankTemplate, gunTemplate, name) {
     var template = require(tankTemplate);
     template.gun = require(gunTemplate);
     
@@ -12,18 +12,8 @@ class Tank extends Entity {
     //construct entity
     super(x, y, pts, angle_rad, 'tank');
     this.applyTemplate(template)
-
-    //dimensions
-    this.tower.rotation = 0;
-
-    //movement
-    this.speed = 0;
-    this.accelerated = false;
-    this.acceleration;
-    this.rotationSpeed;
-    this.adjustAcceleration();
-
-    this.hp = this.maxHp;
+    this.respawn(x, y, angle_rad);
+    this.name = name;
   }
 
   hurt(damage) {
@@ -31,6 +21,25 @@ class Tank extends Entity {
     if (this.hp <= 0) {
       this.hp = 0;
     }
+  }
+
+  respawn(x, y, r) {
+    //position
+    this.body.x = x;
+    this.body.y = y;
+    this.body.angle = r;
+
+    //dimensions
+    this.tower.rotation = 0;
+
+    //movement
+    this.speed = 0;
+    this.accelerated = false;
+    this.acceleration = 0;
+    // this.rotationSpeed;
+    this.adjustAcceleration();
+
+    this.hp = this.maxHp;
   }
 
   applyTemplate(tank, gun) {
@@ -67,7 +76,6 @@ class Tank extends Entity {
     let kb = keyboard.now;
     let was = keyboard.previous;
     let ret = {shoot: false}
-    if (this.hp <= 0) return ret;
 
     if (kb == undefined) return ret;
     if (was == undefined) was = kb;

@@ -12,6 +12,11 @@ canvas {
     display: block;
 }
 
+p {
+    margin: 0;
+    line-height: normal;
+}
+
 #gamemaster {
     visibility: hidden;
 }

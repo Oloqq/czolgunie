@@ -2,6 +2,9 @@
 
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
+var fontSize = 48;
+var fontName = "Verdana";
+ctx.font = fontSize + "px " + fontName;
 
 var socket = io();
 
@@ -17,6 +20,12 @@ var freeCamera = false;
 
 var wallsStatic;
 var tanksStatic;
+
+var deadTankColors = {
+    body: "#808080",
+    turret: "#A9A9A9",
+    barrel: "#A9A9A9",
+}
 
 socket.on('init', (idFromServer, isGamemaster, gameData) => {
     id = idFromServer;
@@ -86,6 +95,12 @@ document.addEventListener("keydown", (ev) => {
 document.addEventListener("keyup", (ev) => {
     let key = ev.key.toLowerCase();
     keys[key] = false;
+
+    // console.log(key);
+
+    if (key == "arrowdown") {
+        socket.emit('kill me');
+    }
 });
 
 socket.on('update', (gameData) => {
@@ -110,18 +125,36 @@ socket.on('update', (gameData) => {
     } else {
         render(tanks[id].x, tanks[id].y, lockedCameraZoom, tanks, wallsStatic, gameData.projectiles);
     }
+    renderUI(gameData);
+
     let keysToSend = {};
     keysToSend['w'] = keys['w'];
     keysToSend['a'] = keys['a'];
     keysToSend['s'] = keys['s'];
     keysToSend['d'] = keys['d'];
+    keysToSend[' '] = keys[' '];
     keysToSend['up'] = keys['arrowup'];
     keysToSend['left'] = keys['arrowleft'];
     keysToSend['right'] = keys['arrowright'];
     socket.emit('keyboard state', keysToSend);
-
-    document.getElementById("hp").innerText = "hp%: " + (tanks[id].hpFraction * 100)
 });
+
+function renderUI(gameData) {
+    let centerx = canvasWidth / 2;
+    let centery = canvasHeight / 2;
+
+    var tanks = gameData.tanks;
+    document.getElementById('hp').innerText = 'hp%: ' + (tanks[id].hpFraction * 100);
+
+    if (tanks[id].hpFraction <= 0) {
+        ctx.font = fontSize + "px " + fontName;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#000000';
+        ctx.fillText('F', centerx, centery);
+        ctx.font = fontSize / 2 + "px " + fontName;
+        ctx.fillText('space to respawn', centerx, centery + fontSize * 2/3);
+    }
+}
 
 function render(camerax, cameray, zoom, tanks, walls, projectiles) {
     let centerx = canvasWidth / 2 / zoom;
@@ -131,8 +164,21 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
     for (let id in tanks) {
         let t = tanks[id];
         let ts = tanksStatic[id];
+        let colors;
+
+        //get colors
+        if (t.hpFraction > 0) {
+            colors = {
+                body: ts.color,
+                turret: ts.tower.color,
+                gun: ts.gun.color,
+            }
+        } else {
+            colors = deadTankColors;
+        }
+
         //body
-        ctx.fillStyle = ts.color;
+        ctx.fillStyle = colors.body;
         ctx.scale(zoom, zoom);
         ctx.translate(centerx-(camerax-t.x), centery-(cameray-t.y));
         ctx.rotate(t.angle);
@@ -145,14 +191,26 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
         ctx.fill();
 
         //tower and barrel
-        ctx.fillStyle = ts.tower.color;
+        ctx.fillStyle = colors.turret;
         ctx.translate(ts.tower.x, 0);
         ctx.rotate(t.towerRotation);
         ctx.fillRect(-ts.tower.length/2, -ts.tower.width/2,
             ts.tower.length, ts.tower.width);
 
-        ctx.fillStyle = ts.gun.color;
+        ctx.fillStyle = colors.gun;
         ctx.fillRect(0, -ts.gun.width/2, ts.gun.length, ts.gun.width);
+        
+        //names
+        let effectiveAngle_deg = (t.angle + t.towerRotation) * (180 / Math.PI);
+        effectiveAngle_deg = Math.abs((effectiveAngle_deg - 90) % 360);
+        if (effectiveAngle_deg > 180) {
+            ctx.scale(-1, -1);
+        }
+        
+        ctx.fillStyle = '#C0C0C0';
+        ctx.font = 12 + "px " + fontName;
+        ctx.textAlign = 'center';
+        ctx.fillText(ts.name, 0, 24);
 
         ctx.resetTransform();
     };    
@@ -189,3 +247,8 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
         ctx.resetTransform();
     });
 }
+
+document.getElementById('nameSubmit').addEventListener('click', ()=>{
+    var name = document.getElementById('name').value;
+    console.log(name);
+});
