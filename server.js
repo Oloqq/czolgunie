@@ -9,8 +9,9 @@ var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
 var Game = require('./game').Game;
+const port = 5000;
 
-app.set('port', 5000);
+app.set('port', port);
 app.use('/client', express.static(__dirname + '/client'));
 var game = new Game();
 
@@ -29,10 +30,9 @@ app.use((request,response)=>{
 
 
 // Starts the server.
-server.listen(5000, function() {
-  console.log('Starting server on port 5000');
+server.listen(port, function() {
+  console.log('Starting server on port ' + port);
 });
-
 
 //var sockets = [];
 var sockets = {};

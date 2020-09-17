@@ -19,5 +19,15 @@
 
   "hp": 100,
 
-  "gun": "this string will be replaced by gun object (should be)"
+  "gun": {
+    "length": 30,
+    "width": 7,
+    "color": "#06a827",
+  
+    "caliber": 5,
+    "shell": {
+      "color": "#e43f5a",
+      "speed": 420
+    }
+  }
 }

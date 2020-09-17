@@ -20,3 +20,11 @@ p {
 #gamemaster {
     visibility: hidden;
 }
+
+.inline {
+    display: inline-block;
+}
+
+.inlineContainer {
+    text-align: center;
+}

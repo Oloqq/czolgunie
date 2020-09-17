@@ -1,9 +1,8 @@
 var Entity = require('./entity').Entity;
 
 class Tank extends Entity {
-  constructor(x, y, angle_deg, tankTemplate, gunTemplate, name) {
+  constructor(x, y, angle_deg, tankTemplate, name) {
     var template = require(tankTemplate);
-    template.gun = require(gunTemplate);
     
     var pts = [[-template.length/2, - template.width/2], [template.length/2, - template.width/2],
                [template.length/2, template.width/2], [-template.length/2, template.width/2]];
@@ -11,6 +10,7 @@ class Tank extends Entity {
 
     //construct entity
     super(x, y, pts, angle_rad, 'tank');
+    this.templateName = tankTemplate;
     this.applyTemplate(template)
     this.respawn(x, y, angle_rad);
     this.name = name;
@@ -42,13 +42,15 @@ class Tank extends Entity {
     this.hp = this.maxHp;
   }
 
-  applyTemplate(tank, gun) {
+  reloadTemplate() {
+    this.applyTemplate(this.templateName);
+  }
+
+  applyTemplate(tank) {
     var template;
-    if (typeof tank == 'string' && typeof gun == 'string') {
+    if (typeof tank == 'string') {
       delete require.cache[require.resolve(tank)];
-      delete require.cache[require.resolve(gun)];
       template = require(tank);
-      template.gun = require(gun);
     }
     else if (typeof tank == 'object') {
       template = tank;
@@ -69,7 +71,7 @@ class Tank extends Entity {
 
     this.maxHp = template.hp;
 
-    this.gun = JSON.parse(JSON.stringify(template.gun));
+    this.gun = template.gun;
   }
 
   reactToKeyboard(keyboard, dt) {
@@ -126,7 +128,7 @@ class Tank extends Entity {
   adjustAcceleration() {
     let velocity = Math.abs(this.speed);
     this.acceleration = (10000 / (velocity + 50)) * this.accelerationBoost;
-    this.rotationSpeed = (1200 / (velocity + 200)) * this.rotationBoost;
+    this.rotationSpeed = Math.pow(velocity + 700, 2) / 8000000 * this.rotationBoost;
   }
 
   turn(dir) {

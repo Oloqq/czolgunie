@@ -21,7 +21,7 @@ class Projectile extends Entity {
     this.dx = Math.cos(tank.body.angle + tank.tower.rotation);
     this.dy = Math.sin(tank.body.angle + tank.tower.rotation);
 
-    this.damage = 30;
+    this.damage = tank.gun.caliber * 4;
   }
 
   deactivate() {

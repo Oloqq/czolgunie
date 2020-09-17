@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Czołgunie</title>
-    <link rel="shortcut icon" type="image/ico" href="/client/favicon.ico"/>
-    <link rel="stylesheet" href="/client/style.css">
-    <script src="/socket.io/socket.io.js"></script> 
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Czołgunie</title>
+	<link rel="shortcut icon" type="image/ico" href="/client/favicon.ico"/>
+	<link rel="stylesheet" href="/client/style.css">
+	<script src="/socket.io/socket.io.js"></script> 
 </head>
 <body>
-    <canvas id="gameCanvas" width=600 height=600 style="border: 1px solid black;"></canvas>
-    <div id="gamemaster">
-        map: <input id="mapName" type="text">
-        <input id="sendButton" type="button" value="submit"><br>
-        <input id="reloadTemplatesButton" type="button" value="reload templates">
-    </div>
-    <p id=hp>hp%: </p>
-    <p>name: <input type=text id=name><input type=button id=nameSubmit value="submit"></p>
+	<div class="inlineContainer">
+		<div class="inline">
+			<canvas id="gameCanvas" width=600 height=600 style="border: 1px solid black;"></canvas>
+		</div>
+		<div class="inline">
+			<p id=hp>hp%: </p>
+			<p>name: <input type=text id=name><input type=button id=nameSubmit value="submit"></p>
+			<div id="gamemaster">
+				<hr>
+				map: <input id="mapName" type="text">
+				<input id="sendButton" type="button" value="submit"><br>
+				<input id="reloadTemplatesButton" type="button" value="reload templates">
+			</div>
+		</div>	
+	</div>
 
-    <script src="/client/main.js"></script>
-    <script src="/client/gamemaster.js"></script>
+	<script src="/client/main.js"></script>
+	<script src="/client/renderer.js"></script>
+	<script src="/client/keyboard.js"></script>
+	<script src="/client/gamemaster.js"></script>
 </body>
 </html>
