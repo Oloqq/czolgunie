@@ -85,6 +85,7 @@ class Game {
 				if (p.entity.type == 'wall' && t.body.collides(p, result)) {
 					t.body.x -= result.overlap * result.overlap_x;
 					t.body.y -= result.overlap * result.overlap_y;
+					t.preventInPlaceAcceleration();
 				}
 				if (p.entity.type == 'tank' && t.body.collides(p, result)) {
 					t.body.x -= result.overlap * result.overlap_x / 2;

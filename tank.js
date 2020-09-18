@@ -28,6 +28,7 @@ class Tank extends Entity {
     this.body.x = x;
     this.body.y = y;
     this.body.angle = r;
+    this.oldPos = {x: x, y: y};
 
     //dimensions
     this.tower.rotation = 0;
@@ -109,7 +110,16 @@ class Tank extends Entity {
     let dy = Math.sin(this.body.angle);
     let vx = dx * this.speed;
     let vy = dy * this.speed;
+    this.oldPos = {x: this.body.x, y: this.body.y};
     this.move(vx * dt, vy * dt);
+  }
+
+  preventInPlaceAcceleration() {
+    if (Math.abs(this.oldPos.x - this.body.x) < 0.01
+     && Math.abs(this.oldPos.y - this.body.y) < 0.01) {
+      this.speed = 0;
+      this.adjustAcceleration();
+    }
   }
 
   accelerate(dir) {
