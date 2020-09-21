@@ -12,7 +12,11 @@ class Game {
 		this.system = new Collisions();
 		this.tanks = {};
 		this.keyboards = {};
-		this.walls = [];
+		this.map = {
+			width: 0,
+			heigt: 0,
+			walls: []
+		};
 		this.projectiles = [];
 		for (let i = 0; i < 500; i++) {
 			this.projectiles.push(new Projectile(this.system));
@@ -144,8 +148,9 @@ class Game {
 	}
 
 	newSpawnPosition() {
-		var x = Math.random() * 500;
-		var y = Math.random() * 500;
+		const margin = 20;
+		var x = Math.random() * (this.map.width - margin * 2) - margin;
+		var y = Math.random() * (this.map.height - margin * 2) - margin;
 		var r = Math.random() * 359;
 		
 		return {x:x, y:y, r:r};
@@ -169,6 +174,7 @@ class Game {
 				t.body.x = pos.x
 				t.body.y = pos.y;
 				t.body.angle = pos.r;
+				t.setSpeed(0);
 				// keep pushing the tank out of walls until it is definitely out
 				let ok = true;
 				while(!ok) {

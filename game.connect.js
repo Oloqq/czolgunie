@@ -3,7 +3,7 @@ var Wall = require('./wall').Wall;
 module.exports = function extend(Game) {
 	Game.prototype.getWallData = function getWallData() {
     var data = [];
-    this.walls.forEach(w=>{
+    this.map.walls.forEach(w=>{
       let d = {
         x: w.body.x,
         y: w.body.y,

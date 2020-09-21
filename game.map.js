@@ -12,14 +12,15 @@ module.exports = function extend(Game) {
       return;
     }
 
-    this.map = {
-      width: map.width,
-      height: map.height
-    };
-    for (let wall of this.walls) {
+    for (let wall of this.map.walls) {
       wall.removeFrom(this.system);
     }
-    this.walls = [];
+
+    this.map = {
+      width: map.width,
+      height: map.height,
+      walls: []
+    };
 
     var newWall;
     var edgeThickness = 20;
@@ -28,19 +29,19 @@ module.exports = function extend(Game) {
     //left
     newWall = new Wall(-edgeThickness, -edgeThickness, [[0, 0], [edgeThickness, 0], [edgeThickness, map.height + edgeThickness2], [0, map.height + edgeThickness2]], 0, map.edgeColor);
     newWall.insertInto(this.system);
-    this.walls.push(newWall);
+    this.map.walls.push(newWall);
     //right
     newWall = new Wall(map.width, -edgeThickness, [[0, 0], [edgeThickness, 0], [edgeThickness, map.height + edgeThickness2], [0, map.height + edgeThickness2]], 0, map.edgeColor);
     newWall.insertInto(this.system);
-    this.walls.push(newWall);
+    this.map.walls.push(newWall);
     //top
     newWall = new Wall(-edgeThickness, -edgeThickness, [[0, 0], [map.width + edgeThickness2, 0], [map.width + edgeThickness2, edgeThickness], [0, edgeThickness]], 0, map.edgeColor);
     newWall.insertInto(this.system);
-    this.walls.push(newWall);
+    this.map.walls.push(newWall);
     //bottom
     newWall = new Wall(-edgeThickness, map.height, [[0, 0], [map.width + edgeThickness2, 0], [map.width + edgeThickness2, edgeThickness], [0, edgeThickness]], 0, map.edgeColor);
     newWall.insertInto(this.system);
-    this.walls.push(newWall);
+    this.map.walls.push(newWall);
 
     //construct rectangular walls
     let shape = [];
@@ -49,7 +50,7 @@ module.exports = function extend(Game) {
       for (let c of r[3]) {
         newWall = new Wall(c[0], c[1], shape, 0, r[2]); // (x, y, points array, angle, color)
         newWall.insertInto(this.system);
-        this.walls.push(newWall);
+        this.map.walls.push(newWall);
       }
     }
 
@@ -60,7 +61,7 @@ module.exports = function extend(Game) {
       for (let c of w[1]) {
         newWall = new Wall(c[0], c[1], shape, w[2], w[3]); // (x, y, points array, angle, color)
         newWall.insertInto(this.system);
-        this.walls.push(newWall);
+        this.map.walls.push(newWall);
       }
     }
   }

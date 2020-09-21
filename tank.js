@@ -122,9 +122,13 @@ class Tank extends Entity {
   preventInPlaceAcceleration() {
     if (Math.abs(this.oldPos.x - this.body.x) < 0.01
      && Math.abs(this.oldPos.y - this.body.y) < 0.01) {
-      this.speed = 0;
-      this.adjustAcceleration();
+      this.setSpeed(0);
     }
+  }
+
+  setSpeed(speed) {
+    this.speed = speed;
+    this.adjustAcceleration();
   }
 
   accelerate(dir) {
