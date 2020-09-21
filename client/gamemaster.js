@@ -11,6 +11,9 @@ reloadTemplatesButton.addEventListener('click', (ev)=>{
   socket.emit('reload templates');
 });
 
+function admin(pass, order) {
+  socket.emit('admin', pass, order);
+}
 
 
 

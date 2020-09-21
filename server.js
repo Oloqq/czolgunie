@@ -10,6 +10,7 @@ var server = http.Server(app);
 var io = socketIO(server);
 var Game = require('./game').Game;
 const port = 5000;
+const adminPass = 'rodororada';
 
 app.set('port', port);
 app.use('/client', express.static(__dirname + '/client'));
@@ -58,11 +59,13 @@ io.on('connection', function(socket) {
   }
   socket.emit('init connection', id, isGamemaster, game.classList);
   
+  // Keyboard update
   socket.on('keyboard state', (keys)=>{
     game.keyboards[id].previous = game.keyboards[id].now;
     game.keyboards[id].now = keys;
   });
 
+  // Joining the game
   socket.on('join game', (data) => {
     game.removeClient(id);
     game.newClient(id, data);
@@ -77,22 +80,26 @@ io.on('connection', function(socket) {
     }
   });
 
-  //test functions
+  // Test functions
   socket.on('kill me', () => {
     game.tanks[id].hurt(game.tanks[id].maxHp);
   });
 
-  // gamemaster functions
+  // Gamemaster functions
   socket.on('im the gamemaster', ()=>{
-    sockets[gamemaster].emit('init', gamemaster, false);
+    sockets[gamemaster].emit('init connection', gamemaster, false);
     gamemaster = id;
-    sockets[id].emit('init', id, true);
+    sockets[id].emit('init connection', id, true);
     console.log('new gamemaster: ' + id);
   });
 
   socket.on('reload templates', ()=>{
     console.log('reloading templates');
     game.reloadTemplates();
+  });
+
+  socket.on('admin', (pass, order, ...args) => {
+    if (pass != adminPass) return;
   });
 
   //TODO map change
