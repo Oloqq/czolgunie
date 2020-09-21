@@ -62,6 +62,12 @@ class Game {
 		delete this.keyboards[id];
 	}
 
+	/*
+	niewidzialne czolgi
+	spam join game
+	nieskonczony restart po 2 joinie
+	*/
+
 	update(dt) {
 		for (let id in this.tanks) {
 			let t = this.tanks[id];

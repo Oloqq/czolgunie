@@ -64,6 +64,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('join game', (data) => {
+    game.removeClient(id);
     game.newClient(id, data);
     socket.emit('init game', game.getInitData());
 
