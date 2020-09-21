@@ -70,7 +70,7 @@ io.on('connection', function(socket) {
 
     // Update static data for others
     let staticData = game.getStaticTanksData();
-    console.log(staticData);
+    // console.log(staticData);
     for (let s in sockets) {
       if (s == id) continue;
       sockets[s].emit('someone joined', staticData);

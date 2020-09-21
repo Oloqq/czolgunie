@@ -62,9 +62,18 @@ document.addEventListener("keyup", (ev) => {
 	}
 });
 
+document.getElementById('name').addEventListener('keydown', (key)=> {
+	if (key.key == 'Enter') {
+		$('#joinGameButton').trigger('click');
+	}
+});
+
 document.getElementById('joinGameButton').addEventListener('click', () => {
 	var name = document.getElementById('name').value;
 	var tankClass = document.getElementById('classesSelect').value;
-	socket.emit('join game', {name: name,
-		 tankClass: tankClass});
+	socket.emit('join game', {name: name, tankClass: tankClass});
+		
+	//remove focus so one won't spam join game by accident
+	$('#name').blur();
+	$('#joinGameButton').blur();
 });

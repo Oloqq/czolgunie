@@ -52,8 +52,6 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
 		let colors;
 
 		//get colors
-		console.log(tanksStatic);
-		console.log(id);
 		if (ts == undefined) return;
 		if (t.hpFraction > 0) {
 			colors = {
