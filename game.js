@@ -1,6 +1,7 @@
 'use strict';
 
 import {Collisions, Polygon} from 'collisions';
+const fs = require('fs');
 
 var Tank = require('./tank').Tank;
 // var Wall = require('./wall').Wall;
@@ -17,14 +18,29 @@ class Game {
 			this.projectiles.push(new Projectile(this.system));
 		}
 		this.projectileSearchIterator = 0;
+
+		this.classList = [];
+		let th = this;
+		fs.readdir('data/tanks', (err, files) => {
+			if(err) {
+				return console.log('Unable to scan directory: ' + err);
+			}
+			files.forEach(function(file) {
+				th.classList.push(file);
+			});
+		});
+
 		this.wallsChanged = false;
 		this.loadMap('smol');
 	}
 
-	newClient(id) {
+	newClient(id, data) {
+		data.name = data.name.slice(0, 10);
+		let classPath = data.tankClass.toLowerCase();
+
 		var s = this.newSpawnPosition();
-		
-		var tank = new Tank(s.x, s.y, s.r, './data/tanks/bulldozer.json', 'MASNY CZOU');
+
+		var tank = new Tank(s.x, s.y, s.r, './data/tanks/' + classPath + '.json', data.name);
 		tank.insertInto(this.system);
 		this.tanks[id] = tank;
 		this.keyboards[id] = {};
@@ -34,14 +50,15 @@ class Game {
 	{
 		for (let id in this.tanks) {
 			var tank = this.tanks[id];
-			// tank.applyTemplate('./data/tanks/bulldozer.json');
 			tank.reloadTemplate();
 		}
 	}
 
 	removeClient(id) {
-		this.tanks[id].removeFrom(this.system);
-		delete this.tanks[id];
+		if (this.tanks[id]) {
+			this.tanks[id].removeFrom(this.system);
+			delete this.tanks[id];
+		}
 		delete this.keyboards[id];
 	}
 
@@ -92,7 +109,8 @@ class Game {
 					t.body.y -= result.overlap * result.overlap_y / 2;
 					p.x += result.overlap * result.overlap_x / 2;
 					p.y += result.overlap * result.overlap_y / 2;
-					//TODO apply some charge damage, condition above translations on masses
+					
+					t.ram(p.entity);
 				}
 			}
 		}

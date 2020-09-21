@@ -16,6 +16,7 @@
   "rotationBoost": 10,
   "engineBraking": 3,
   "brakeForce": 300,
+  "ramDef": 100,
 
   "hp": 100,
 

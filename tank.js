@@ -69,6 +69,7 @@ class Tank extends Entity {
     this.accelerationBoost = template.accelerationBoost;
     this.rotationBoost = template.rotationBoost;
     this.brakeForce = template.brakeForce;
+    this.ramDef = template.ramDef;
 
     this.maxHp = template.hp;
 
@@ -94,6 +95,10 @@ class Tank extends Entity {
   }
 
   update(dt) {
+    // if (this.templateName == './data/tanks/bulldozer.json') {
+    //   console.log(this.speed);
+    // }
+
     if (!this.accelerated) {
       if (this.speed > 0) {
         this.speed -= this.engineBraking;
@@ -147,6 +152,14 @@ class Tank extends Entity {
 
   rotateTower(dir) {
     this.tower.rotation += this.tower.rotationSpeed * dir;
+  }
+
+  ram(other) {
+    if (this.speed > 300) {
+      other.hurt(this.speed / other.ramDef);
+      this.hurt(this.speed / this.ramDef);
+    }
+    this.speed *= 0.75;
   }
 }
 

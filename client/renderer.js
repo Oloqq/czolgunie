@@ -30,6 +30,17 @@ function renderUI(gameData) {
 	}
 }
 
+function renderMenu() {
+	let centerx = canvasWidth / 2;
+	let centery = canvasHeight / 2;
+
+	ctx.font = fontSize + "px " + fontName;
+	ctx.textAlign = 'center';
+	ctx.fillStyle = '#FFFFFF';
+	ctx.fillText('------>>>>>>>>', centerx, centery);
+	ctx.fillText('Customize then join', centerx, centery + fontSize);
+}
+
 function render(camerax, cameray, zoom, tanks, walls, projectiles) {
 	let centerx = canvasWidth / 2 / zoom;
 	let centery = canvasHeight / 2 / zoom;
@@ -41,6 +52,9 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
 		let colors;
 
 		//get colors
+		console.log(tanksStatic);
+		console.log(id);
+		if (ts == undefined) return;
 		if (t.hpFraction > 0) {
 			colors = {
 				body: ts.color,
@@ -124,8 +138,3 @@ function render(camerax, cameray, zoom, tanks, walls, projectiles) {
 		ctx.resetTransform();
 	});
 }
-
-document.getElementById('nameSubmit').addEventListener('click', () => {
-	var name = document.getElementById('name').value;
-	console.log(name);
-});

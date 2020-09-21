@@ -34,7 +34,6 @@ server.listen(port, function() {
   console.log('Starting server on port ' + port);
 });
 
-//var sockets = [];
 var sockets = {};
 var connectionsNum = 0;
 var gamemaster = undefined;
@@ -48,25 +47,33 @@ io.on('connection', function(socket) {
     id = randomText(5);
   } while(id in sockets);
   sockets[id] = socket;
-  game.newClient(id);
 
   connectionsNum++;
   console.log("client connected: " + id + '  |  ' + connectionsNum+" total");
-  for (let s in sockets) {
-    if (s == id) continue;
-    sockets[s].emit('someone connected', game.getStaticTanksData());
-  }
 
   if (connectionsNum == 1) {
     gamemaster = id;
     console.log('new gamemaster: ' + id);
     isGamemaster = true;
   }
-  socket.emit('init', id, isGamemaster, game.getInitData());
+  socket.emit('init connection', id, isGamemaster, game.classList);
   
   socket.on('keyboard state', (keys)=>{
     game.keyboards[id].previous = game.keyboards[id].now;
     game.keyboards[id].now = keys;
+  });
+
+  socket.on('join game', (data) => {
+    game.newClient(id, data);
+    socket.emit('init game', game.getInitData());
+
+    // Update static data for others
+    let staticData = game.getStaticTanksData();
+    console.log(staticData);
+    for (let s in sockets) {
+      if (s == id) continue;
+      sockets[s].emit('someone joined', staticData);
+    }
   });
 
   //test functions

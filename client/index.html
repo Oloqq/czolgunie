@@ -16,7 +16,13 @@
 		</div>
 		<div class="inline">
 			<p id=hp>hp%: </p>
-			<p>name: <input type=text id=name><input type=button id=nameSubmit value="submit"></p>
+			<p>name: <input type=text id=name maxlength=10></p>
+			<input type=button id=joinGameButton value="Join game">
+			<p>class: 
+				<select id="classesSelect">
+					
+				</select>
+			</p>
 			<div id="gamemaster">
 				<hr>
 				map: <input id="mapName" type="text">
@@ -28,7 +34,7 @@
 
 	<script src="/client/main.js"></script>
 	<script src="/client/renderer.js"></script>
-	<script src="/client/keyboard.js"></script>
+	<script src="/client/input.js"></script>
 	<script src="/client/gamemaster.js"></script>
 </body>
 </html>

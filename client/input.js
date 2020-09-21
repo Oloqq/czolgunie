@@ -57,9 +57,14 @@ document.addEventListener("keyup", (ev) => {
 	let key = ev.key.toLowerCase();
 	keys[key] = false;
 
-	// console.log(key);
-
 	if (key == "arrowdown") {
 		socket.emit('kill me');
 	}
+});
+
+document.getElementById('joinGameButton').addEventListener('click', () => {
+	var name = document.getElementById('name').value;
+	var tankClass = document.getElementById('classesSelect').value;
+	socket.emit('join game', {name: name,
+		 tankClass: tankClass});
 });

@@ -12,10 +12,11 @@
   },
 
   "maxSpeed": 400,
-  "accelerationBoost": 2,
-  "rotationBoost": 1,
+  "accelerationBoost": 5,
+  "rotationBoost": 15,
   "engineBraking": 3,
   "brakeForce": 300,
+  "ramDef": 10,
 
   "hp": 100,
 
