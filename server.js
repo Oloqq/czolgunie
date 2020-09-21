@@ -10,7 +10,7 @@ var server = http.Server(app);
 var io = socketIO(server);
 var Game = require('./game').Game;
 const port = 5000;
-const adminPass = 'rodororada';
+const adminPass = 'masnoni';
 
 app.set('port', port);
 app.use('/client', express.static(__dirname + '/client'));
@@ -50,14 +50,14 @@ io.on('connection', function(socket) {
   sockets[id] = socket;
 
   connectionsNum++;
-  console.log("client connected: " + id + '  |  ' + connectionsNum+" total");
+  console.log("client connected: " + id + '  |  ' + connectionsNum + " total");
 
   if (connectionsNum == 1) {
     gamemaster = id;
     console.log('new gamemaster: ' + id);
     isGamemaster = true;
   }
-  socket.emit('init connection', id, isGamemaster, game.classList);
+  socket.emit('init connection', id, isGamemaster, game.classList, game.mapList);
   
   // Keyboard update
   socket.on('keyboard state', (keys)=>{
@@ -86,13 +86,6 @@ io.on('connection', function(socket) {
   });
 
   // Gamemaster functions
-  socket.on('im the gamemaster', ()=>{
-    sockets[gamemaster].emit('init connection', gamemaster, false);
-    gamemaster = id;
-    sockets[id].emit('init connection', id, true);
-    console.log('new gamemaster: ' + id);
-  });
-
   socket.on('reload templates', ()=>{
     console.log('reloading templates');
     game.reloadTemplates();
@@ -100,6 +93,13 @@ io.on('connection', function(socket) {
 
   socket.on('admin', (pass, order, ...args) => {
     if (pass != adminPass) return;
+    switch(order) {
+      case 'imthemaster':
+        sockets[gamemaster].emit('init connection', gamemaster, false);
+        gamemaster = id;
+        sockets[id].emit('init connection', id, true);
+        console.log('new gamemaster: ' + id);
+    }
   });
 
   //TODO map change

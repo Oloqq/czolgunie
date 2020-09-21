@@ -18,7 +18,7 @@ function emit(event, data) {
 	socket.emit(event, id, data);
 }
 
-socket.on('init connection', (idFromServer, isGamemaster, classes) => {
+socket.on('init connection', (idFromServer, isGamemaster, classes, maps) => {
 	id = idFromServer;
 	if (isGamemaster) {
 		document.getElementById("gamemaster").style.visibility = 'visible';
@@ -26,11 +26,21 @@ socket.on('init connection', (idFromServer, isGamemaster, classes) => {
 		document.getElementById("gamemaster").style.visibility = 'hidden';
 	}
 
-	var options = document.getElementById("classesSelect");
-	for (let i = 0; i < classes.length; i++) {
-		let name = classes[i].replace('.json', '');
-		name = name.substr(0, 1).toUpperCase() + name.slice(1);
-		options.innerHTML += "<option>" + name + "</option>"
+	if (classes) {
+		let options = document.getElementById("classesSelect");
+		for (let i = 0; i < classes.length; i++) {
+			let name = classes[i].replace('.json', '');
+			name = name.substr(0, 1).toUpperCase() + name.slice(1);
+			options.innerHTML += "<option>" + name + "</option>"
+		}
+	}
+	if (maps) {
+		let options = document.getElementById("mapsSelect");
+		for (let i = 0; i < classes.length; i++) {
+			let name = classes[i].replace('.json', '');
+			name = name.substr(0, 1).toUpperCase() + name.slice(1);
+			options.innerHTML += "<option>" + name + "</option>"
+		}
 	}
 
 	emit('start game', {});

@@ -30,6 +30,16 @@ class Game {
 			});
 		});
 
+		this.mapList = [];
+		fs.readdir('data/maps', (err, files) => {
+			if(err) {
+				return console.log('Unable to scan directory: ' + err);
+			}
+			files.forEach(function(file) {
+				th.mapList.push(file);
+			});
+		});
+
 		this.wallsChanged = false;
 		this.loadMap('smol');
 	}
