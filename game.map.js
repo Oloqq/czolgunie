@@ -2,6 +2,7 @@ var Wall = require('./wall').Wall;
 
 module.exports = function extend(Game) {
 	Game.prototype.loadMap = function loadMap(name) {
+    console.log(name);
     var map;
     try {
       map = require('./data/maps/'+name+'.json');
@@ -10,6 +11,15 @@ module.exports = function extend(Game) {
       console.log('tried to load nonexistent map: ' + name);
       return;
     }
+
+    this.map = {
+      width: map.width,
+      height: map.height
+    };
+    for (let wall of this.walls) {
+      wall.removeFrom(this.system);
+    }
+    this.walls = [];
 
     var newWall;
     var edgeThickness = 20;

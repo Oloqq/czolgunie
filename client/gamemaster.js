@@ -1,10 +1,7 @@
 'use strict';
 
-var submitButton = document.getElementById('sendButton');
-var mapName = document.getElementById('mapName');
-
-submitButton.addEventListener('click', (ev)=>{
-  socket.emit('map change', mapName.value);
+$('#loadMap').on('click', (ev)=>{
+  socket.emit('map change', $('#mapsSelect').val());
 });
 
 reloadTemplatesButton.addEventListener('click', (ev)=>{

@@ -41,7 +41,7 @@ class Game {
 		});
 
 		this.wallsChanged = false;
-		this.loadMap('smol');
+		this.loadMap('bonk');
 	}
 
 	newClient(id, data) {
@@ -149,6 +149,41 @@ class Game {
 		var r = Math.random() * 359;
 		
 		return {x:x, y:y, r:r};
+	}
+
+	outOfMap(entity) {
+		var b = entity.body;
+		if (b.x < 0) return true;
+		if (b.y < 0) return true;
+		if (b.x > this.map.width) return true;
+		if (b.y > this.map.height) return true;
+
+		return false;
+	}
+
+	randomizePlayerPositions() {
+		for (let id in this.tanks) {
+			let t = this.tanks[id];
+			do {
+				let pos = this.newSpawnPosition();
+				t.body.x = pos.x
+				t.body.y = pos.y;
+				t.body.angle = pos.r;
+				// keep pushing the tank out of walls until it is definitely out
+				let ok = true;
+				while(!ok) {
+					ok = true;
+					const potentials = t.body.potentials();
+					for (const p of potentials) {
+						if (p.entity.type == 'wall' && t.body.collides(p, result)) {
+							t.body.x -= result.overlap * result.overlap_x;
+							t.body.y -= result.overlap * result.overlap_y;
+							ok = false;
+						}
+					}
+				}
+			} while(this.outOfMap(t));
+		}
 	}
 
 	getInactiveProjectile() {

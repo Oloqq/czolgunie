@@ -36,8 +36,8 @@ socket.on('init connection', (idFromServer, isGamemaster, classes, maps) => {
 	}
 	if (maps) {
 		let options = document.getElementById("mapsSelect");
-		for (let i = 0; i < classes.length; i++) {
-			let name = classes[i].replace('.json', '');
+		for (let i = 0; i < maps.length; i++) {
+			let name = maps[i].replace('.json', '');
 			name = name.substr(0, 1).toUpperCase() + name.slice(1);
 			options.innerHTML += "<option>" + name + "</option>"
 		}
@@ -67,6 +67,8 @@ socket.on('update', (gameData) => {
 	else if (state == 'game') {
 		if (!gameData) return;
 		var tanks = gameData.tanks;
+		if (!tanks || !tanks[id]) return; 
+
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 	
 		if (freeCamera) {

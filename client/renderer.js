@@ -18,7 +18,7 @@ function renderUI(gameData) {
 	let centery = canvasHeight / 2;
 
 	var tanks = gameData.tanks;
-	document.getElementById('hp').innerText = 'hp%: ' + (tanks[id].hpFraction * 100);
+	document.getElementById('hp').innerText = 'hp%: ' + String(tanks[id].hpFraction * 100).slice(0, 5);
 
 	if (tanks[id].hpFraction <= 0) {
 		ctx.font = fontSize + "px " + fontName;

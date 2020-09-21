@@ -102,7 +102,15 @@ io.on('connection', function(socket) {
     }
   });
 
-  //TODO map change
+  socket.on('map change', (name) => {
+    if (!isGamemaster) return;
+    game.loadMap(name.toLowerCase());
+    game.randomizePlayerPositions();
+    for(let id in sockets) {
+      let socket = sockets[id];
+      socket.emit('init game', game.getInitData());
+    }
+  });
 
   // disconnect
   socket.on('disconnect', ()=>{   
