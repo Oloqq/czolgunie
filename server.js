@@ -99,6 +99,7 @@ io.on('connection', function(socket) {
         gamemaster = id;
         sockets[id].emit('init connection', id, true);
         console.log('new gamemaster: ' + id);
+        break;
     }
   });
 
